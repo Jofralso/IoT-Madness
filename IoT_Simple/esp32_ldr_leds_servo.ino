@@ -48,11 +48,11 @@ void setup()
 void loop()
 {
   int ldrValue = analogRead(LDR_PIN);
-  int servoAngle = map(ldrValue, 0, 1023, 0, 180);//Adjust 0-1023 to values between 0-4095 because of the ESP32 ADC
+  int servoAngle = map(ldrValue, 0, 4095, 0, 180);//Adjust 0-1023 to values between 0-4095 because of the ESP32 ADC
   Serial.print("LDR Output Value: ");
   Serial.println(ldrValue);
   // Adjust to the value in between the range of servoAngle
-  if (ldrValue < 400) { 
+  if (ldrValue < 2000) { 
     digitalWrite(LED_PIN_1, HIGH);
     digitalWrite(LED_PIN_2, LOW);
   } else {
