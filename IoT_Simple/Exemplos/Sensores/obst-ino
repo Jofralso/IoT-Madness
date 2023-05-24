@@ -1,0 +1,18 @@
+int pinoObstaculo = 2; // Pino digital conectado ao sensor de obstáculo
+
+void setup() {
+  Serial.begin(9600); // Inicializa a comunicação serial
+  pinMode(pinoObstaculo, INPUT); // Define o pino do sensor de obstáculo como entrada
+}
+
+void loop() {
+  int estadoObstaculo = digitalRead(pinoObstaculo); // Lê o estado do sensor de obstáculo
+
+  if (estadoObstaculo == HIGH) {
+    Serial.println("Obstáculo detectado!");
+  } else {
+    Serial.println("Nenhum obstáculo detectado.");
+  }
+
+  delay(1000); // Aguarda por 1 segundo
+}
