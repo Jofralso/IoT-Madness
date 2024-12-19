@@ -1,0 +1,58 @@
+services:
+  mosquitto:
+    image: eclipse-mosquitto
+    container_name: mqtt-broker
+    ports:
+      - "1883:1883"
+    networks:
+      - mqtt-net
+    volumes:
+      - mosquitto-data:/mosquitto/data
+      - mosquitto-config:/mosquitto/config
+
+  nodered:
+    image: nodered/node-red
+    container_name: node-red
+    ports:
+      - "1880:1880"
+    networks:
+      - mqtt-net
+    environment:
+      - MQTT_BROKER=mqtt-broker
+    volumes:
+      - nodered-data:/data
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    networks:
+      - mqtt-net
+    volumes:
+      - grafana-data:/var/lib/grafana
+
+  influxdb:
+    image: influxdb:latest
+    container_name: influxdb
+    ports:
+      - "8086:8086"  # InfluxDB default port
+    networks:
+      - mqtt-net
+    environment:
+      - INFLUXDB_DB=metrics
+      - INFLUXDB_HTTP_AUTH_ENABLED=false
+    volumes:
+      - influxdb-data:/var/lib/influxdb
+    restart: always
+
+networks:
+  mqtt-net:
+    driver: bridge
+
+volumes:
+  mosquitto-data:
+  mosquitto-config:
+  nodered-data:
+  grafana-data:
+  influxdb-data:
